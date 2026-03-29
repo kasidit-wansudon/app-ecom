@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { Facebook, Instagram, Twitter, Youtube, Mail, Phone, MapPin, CreditCard, Truck, Shield, RotateCcw } from 'lucide-react';
 
 const footerLinks = {
@@ -39,6 +40,8 @@ const trustFeatures = [
 ];
 
 export default function Footer() {
+  const navigate = useNavigate();
+
   return (
     <footer className="relative bg-gray-900 text-white overflow-hidden">
       {/* Animated Gradient Border */}
@@ -71,14 +74,17 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="lg:col-span-2">
             {/* Logo */}
-            <a href="#" className="inline-flex items-center gap-2 mb-6">
+            <button
+              onClick={() => navigate('/')}
+              className="inline-flex items-center gap-2 mb-6 hover:opacity-80 transition-opacity"
+            >
               <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/30">
                 <span className="text-white font-bold text-2xl">O</span>
               </div>
               <span className="font-bold text-2xl">
                 Orange<span className="text-orange-500">Shop</span>
               </span>
-            </a>
+            </button>
 
             <p className="text-gray-400 mb-6 max-w-sm">
               จัดจำหน่ายสินค้าคุณภาพดี ราคาคุ้มค่า พร้อมบริการหลังการขายที่ดีที่สุด
@@ -121,13 +127,13 @@ export default function Footer() {
             <ul className="space-y-3">
               {footerLinks.categories.map((link, index) => (
                 <li key={index}>
-                  <a
-                    href={link.href}
+                  <button
+                    onClick={() => navigate(`/products?category=${link.label}`)}
                     className="text-gray-400 hover:text-orange-500 transition-colors duration-300 inline-flex items-center group"
                   >
                     <span className="w-0 group-hover:w-2 h-0.5 bg-orange-500 mr-0 group-hover:mr-2 transition-all duration-300" />
                     {link.label}
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>

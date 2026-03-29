@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { Mail, Check, Gift, Bell, Tag } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -66,12 +64,12 @@ export default function Newsletter() {
     if (!email) return;
 
     setIsLoading(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
       setIsSubmitted(true);
-      
+
       // Confetti effect
       createConfetti();
     }, 1500);
@@ -80,7 +78,7 @@ export default function Newsletter() {
   const createConfetti = () => {
     const colors = ['#FF6B35', '#FF9F6B', '#E85D04', '#FFD93D', '#6BCF7F'];
     const container = document.querySelector('.newsletter-card');
-    
+
     if (!container) return;
 
     for (let i = 0; i < 50; i++) {
@@ -119,7 +117,7 @@ export default function Newsletter() {
         <div className="newsletter-card relative">
           {/* Gradient Border Effect */}
           <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 rounded-3xl opacity-75 blur-sm animate-pulse" />
-          
+
           {/* Card Content */}
           <div className="relative bg-white rounded-3xl p-8 sm:p-12 shadow-2xl overflow-hidden">
             {/* Decorative Elements */}
@@ -160,19 +158,19 @@ export default function Newsletter() {
                   <div className="flex flex-col sm:flex-row gap-3">
                     <div className="relative flex-1">
                       <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                      <Input
+                      <input
                         type="email"
                         placeholder="กรอกอีเมลของคุณ"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="pl-12 pr-4 py-6 text-lg rounded-xl border-2 border-gray-200 focus:border-orange-500 focus:ring-orange-500/20 transition-all duration-300"
+                        className="form-input pl-12 pr-4 py-4 text-lg rounded-xl border-2 border-gray-200 focus:border-orange-500 w-full"
                         required
                       />
                     </div>
-                    <Button
+                    <button
                       type="submit"
                       disabled={isLoading}
-                      className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-6 text-lg font-semibold rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 transition-all duration-300 hover:scale-105 disabled:opacity-70"
+                      className="btn btn-primary px-8 py-4 text-lg font-semibold rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 hover:scale-105 disabled:opacity-70"
                     >
                       {isLoading ? (
                         <span className="flex items-center gap-2">
@@ -197,7 +195,7 @@ export default function Newsletter() {
                       ) : (
                         'สมัครเลย'
                       )}
-                    </Button>
+                    </button>
                   </div>
                 </form>
               ) : (

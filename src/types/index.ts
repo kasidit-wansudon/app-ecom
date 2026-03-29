@@ -45,3 +45,32 @@ export interface TrustBadge {
   value: string;
   label: string;
 }
+
+export interface Order {
+  id: string;
+  date: string;
+  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  items: CartItem[];
+  total: number;
+  shippingAddress: string;
+}
+
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  avatar: string;
+  joinDate: string;
+  totalOrders: number;
+  totalSpent: number;
+  status: 'active' | 'inactive';
+}
+
+export interface DashboardStat {
+  label: string;
+  value: string;
+  change: string;
+  trend: 'up' | 'down';
+  icon: string;
+}

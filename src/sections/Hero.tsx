@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, ShoppingBag, Star, Truck, Shield } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import gsap from 'gsap';
-
-interface HeroProps {
-  onAddToCart: () => void;
-}
+import { useApp } from '@/context/AppContext';
+import { mockProducts } from '@/data/mockData';
 
 const trustBadges = [
   { icon: ShoppingBag, value: '10K+', label: 'สินค้า' },
@@ -14,7 +12,9 @@ const trustBadges = [
   { icon: Shield, value: '100%', label: 'รับประกัน' },
 ];
 
-export default function Hero({ onAddToCart }: HeroProps) {
+export default function Hero() {
+  const navigate = useNavigate();
+  const { addToCart } = useApp();
   const heroRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const productRef = useRef<HTMLDivElement>(null);
@@ -115,18 +115,18 @@ export default function Hero({ onAddToCart }: HeroProps) {
     <section
       id="hero"
       ref={heroRef}
-      className="relative min-h-screen flex items-center overflow-hidden pt-20"
+      className="relative min-h-screen flex items-center overflow-hidden"
     >
       {/* Animated Background */}
       <div className="hero-bg absolute inset-0">
         {/* Gradient Mesh */}
         <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-white to-orange-100" />
-        
+
         {/* Animated Orbs */}
         <div className="absolute top-20 left-10 w-96 h-96 bg-orange-300/20 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-20 right-10 w-80 h-80 bg-orange-400/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-orange-200/10 to-pink-200/10 rounded-full blur-3xl" />
-        
+
         {/* Floating Particles */}
         {[...Array(20)].map((_, i) => (
           <div
@@ -165,28 +165,29 @@ export default function Hero({ onAddToCart }: HeroProps) {
 
             {/* Description */}
             <p className="hero-description text-lg text-gray-600 mb-8 max-w-xl mx-auto lg:mx-0">
-              คัดสรรสินค้าคุณภาพดี ราคาคุ้มค่า ส่งตรงถึงบ้านคุณ 
+              คัดสรรสินค้าคุณภาพดี ราคาคุ้มค่า ส่งตรงถึงบ้านคุณ
               พร้อมโปรโมชั่นสุดพิเศษทุกวัน
             </p>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-10">
-              <Button
-                size="lg"
-                className="hero-cta bg-orange-500 hover:bg-orange-600 text-white px-8 py-6 text-lg font-semibold rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 transition-all duration-300 hover:scale-105 group"
-                onClick={onAddToCart}
+              <button
+                className="hero-cta btn btn-primary btn-lg px-8 py-6 text-lg font-semibold rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 hover:scale-105 group"
+                onClick={() => {
+                  addToCart(mockProducts[0]);
+                  navigate('/cart');
+                }}
               >
                 ช้อปเลยตอนนี้
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="hero-cta border-2 border-gray-900 text-gray-900 hover:border-orange-500 hover:text-orange-500 hover:bg-orange-50 px-8 py-6 text-lg font-semibold rounded-xl transition-all duration-300 group"
+              </button>
+              <button
+                className="hero-cta btn btn-outline btn-lg border-2 border-gray-900 text-gray-900 hover:border-orange-500 hover:text-orange-500 hover:bg-orange-50 px-8 py-6 text-lg font-semibold rounded-xl group"
+                onClick={() => navigate('/products')}
               >
                 ดูสินค้าทั้งหมด
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:rotate-[-45deg] transition-transform duration-300" />
-              </Button>
+              </button>
             </div>
 
             {/* Trust Badges */}
@@ -255,14 +256,13 @@ export default function Hero({ onAddToCart }: HeroProps) {
                     <span className="text-2xl font-bold text-orange-500">฿2,990</span>
                     <span className="text-sm text-gray-400 line-through ml-2">฿4,290</span>
                   </div>
-                  <Button
-                    size="sm"
-                    className="bg-orange-500 hover:bg-orange-600 text-white rounded-full"
-                    onClick={onAddToCart}
+                  <button
+                    className="btn btn-primary btn-sm rounded-full flex items-center"
+                    onClick={() => addToCart(mockProducts[0])}
                   >
                     <ShoppingBag className="w-4 h-4 mr-1" />
                     เพิ่ม
-                  </Button>
+                  </button>
                 </div>
               </div>
 

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Smartphone, Laptop, Headphones, Watch, Camera, Gamepad2, Shirt, Home } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -17,6 +18,7 @@ const categories = [
 ];
 
 export default function Categories() {
+  const navigate = useNavigate();
   const sectionRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
@@ -134,6 +136,7 @@ export default function Categories() {
                 onMouseMove={(e) => handleMouseMove(e, category.id)}
                 onMouseLeave={handleMouseLeave}
                 style={{ perspective: '1000px' }}
+                onClick={() => navigate(`/products?category=${category.name}`)}
               >
                 <div
                   className="relative bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer"
@@ -190,7 +193,10 @@ export default function Categories() {
 
         {/* View All Button */}
         <div className="text-center mt-12">
-          <button className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white rounded-full font-semibold hover:bg-orange-500 transition-colors duration-300 group">
+          <button
+            onClick={() => navigate('/products')}
+            className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white rounded-full font-semibold hover:bg-orange-500 transition-colors duration-300 group"
+          >
             ดูหมวดหมู่ทั้งหมด
             <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
           </button>

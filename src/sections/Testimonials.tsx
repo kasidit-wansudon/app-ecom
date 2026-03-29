@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -122,7 +121,7 @@ export default function Testimonials() {
   const getCardStyle = (index: number) => {
     const diff = index - activeIndex;
     const normalizedDiff = ((diff + testimonials.length) % testimonials.length);
-    
+
     if (normalizedDiff === 0) {
       // Active card
       return {
@@ -234,14 +233,12 @@ export default function Testimonials() {
 
         {/* Navigation */}
         <div className="flex items-center justify-center gap-4 mt-8">
-          <Button
-            variant="outline"
-            size="icon"
+          <button
             onClick={goToPrev}
-            className="w-12 h-12 rounded-full border-2 border-gray-200 hover:border-orange-500 hover:bg-orange-50 transition-all duration-300"
+            className="w-12 h-12 rounded-full border-2 border-gray-200 hover:border-orange-500 hover:bg-orange-50 transition-all duration-300 flex items-center justify-center"
           >
             <ChevronLeft className="w-5 h-5" />
-          </Button>
+          </button>
 
           {/* Dots */}
           <div className="flex gap-2">
@@ -264,14 +261,12 @@ export default function Testimonials() {
             ))}
           </div>
 
-          <Button
-            variant="outline"
-            size="icon"
+          <button
             onClick={goToNext}
-            className="w-12 h-12 rounded-full border-2 border-gray-200 hover:border-orange-500 hover:bg-orange-50 transition-all duration-300"
+            className="w-12 h-12 rounded-full border-2 border-gray-200 hover:border-orange-500 hover:bg-orange-50 transition-all duration-300 flex items-center justify-center"
           >
             <ChevronRight className="w-5 h-5" />
-          </Button>
+          </button>
         </div>
       </div>
     </section>

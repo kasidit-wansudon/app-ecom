@@ -1,16 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Clock, Zap } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface PromoBannerProps {
-  onAddToCart: () => void;
-}
-
-export default function PromoBanner({ onAddToCart }: PromoBannerProps) {
+export default function PromoBanner() {
+  const navigate = useNavigate();
   const sectionRef = useRef<HTMLDivElement>(null);
   const [timeLeft, setTimeLeft] = useState({
     days: 2,
@@ -96,7 +93,7 @@ export default function PromoBanner({ onAddToCart }: PromoBannerProps) {
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
         let { days, hours, minutes, seconds } = prev;
-        
+
         if (seconds > 0) {
           seconds--;
         } else {
@@ -115,7 +112,7 @@ export default function PromoBanner({ onAddToCart }: PromoBannerProps) {
             }
           }
         }
-        
+
         return { days, hours, minutes, seconds };
       });
     }, 1000);
@@ -135,13 +132,13 @@ export default function PromoBanner({ onAddToCart }: PromoBannerProps) {
       <div className="absolute inset-0">
         {/* Left Side - Dark */}
         <div className="promo-bg-left absolute inset-0 bg-gray-900" style={{ clipPath: 'polygon(0 0, 60% 0, 45% 100%, 0 100%)' }} />
-        
+
         {/* Right Side - Orange Gradient */}
-        <div 
-          className="promo-bg-right absolute inset-0 bg-gradient-to-br from-orange-500 to-orange-600" 
+        <div
+          className="promo-bg-right absolute inset-0 bg-gradient-to-br from-orange-500 to-orange-600"
           style={{ clipPath: 'polygon(60% 0, 100% 0, 100% 100%, 45% 100%)' }}
         />
-        
+
         {/* Decorative Elements */}
         <div className="absolute top-10 left-10 w-32 h-32 border border-white/10 rounded-full" />
         <div className="absolute bottom-10 right-10 w-48 h-48 border border-white/10 rounded-full" />
@@ -170,16 +167,15 @@ export default function PromoBanner({ onAddToCart }: PromoBannerProps) {
             </p>
 
             {/* CTA Button */}
-            <Button
-              size="lg"
-              onClick={onAddToCart}
-              className={`bg-white text-gray-900 hover:bg-orange-50 px-8 py-6 text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105 group ${
+            <button
+              onClick={() => navigate('/products')}
+              className={`btn btn-lg bg-white text-gray-900 hover:bg-orange-50 px-8 py-6 text-lg font-bold rounded-xl hover:scale-105 group ${
                 isUrgent ? 'animate-pulse' : ''
               }`}
             >
               ช้อปดีลนี้เลย
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-2 transition-transform" />
-            </Button>
+            </button>
           </div>
 
           {/* Right Content - Countdown */}

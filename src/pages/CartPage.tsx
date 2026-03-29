@@ -103,17 +103,17 @@ export default function CartPage() {
 
                   {/* Qty & Actions */}
                   <div className="flex flex-col items-end justify-between gap-3 flex-shrink-0">
-                    <div className="flex items-center rounded-xl border border-gray-200 overflow-hidden">
+                    <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden">
                       <button
                         onClick={() => handleUpdateQuantity(item.product.id, item.quantity - 1)}
-                        className="w-9 h-9 flex items-center justify-center hover:bg-orange-50 hover:text-orange-600 transition-colors"
+                        className="w-9 h-9 flex items-center justify-center text-gray-600 hover:bg-orange-50 hover:text-orange-600 transition-colors"
                       >
                         <Minus className="w-4 h-4" />
                       </button>
-                      <span className="w-10 text-center font-bold text-sm">{item.quantity}</span>
+                      <span className="w-10 text-center font-bold text-sm text-gray-900">{item.quantity}</span>
                       <button
                         onClick={() => handleUpdateQuantity(item.product.id, item.quantity + 1)}
-                        className="w-9 h-9 flex items-center justify-center hover:bg-orange-50 hover:text-orange-600 transition-colors"
+                        className="w-9 h-9 flex items-center justify-center text-gray-600 hover:bg-orange-50 hover:text-orange-600 transition-colors"
                       >
                         <Plus className="w-4 h-4" />
                       </button>

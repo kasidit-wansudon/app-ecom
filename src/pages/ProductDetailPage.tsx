@@ -181,19 +181,19 @@ export default function ProductDetailPage() {
             <div className="space-y-4">
               <div className="flex items-center gap-4">
                 <span className="text-sm font-medium text-gray-700">จำนวน:</span>
-                <div className="flex items-center border border-gray-300 rounded-lg">
+                <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="p-2 hover:bg-gray-100"
+                    className="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-orange-50 hover:text-orange-600 transition-colors"
                   >
                     <Minus className="w-4 h-4" />
                   </button>
-                  <span className="px-6 py-2 text-center font-semibold w-16">
+                  <span className="w-12 text-center font-bold text-gray-900">
                     {quantity}
                   </span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="p-2 hover:bg-gray-100"
+                    className="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-orange-50 hover:text-orange-600 transition-colors"
                   >
                     <Plus className="w-4 h-4" />
                   </button>

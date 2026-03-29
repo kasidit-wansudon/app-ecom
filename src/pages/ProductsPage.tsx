@@ -1,16 +1,20 @@
 import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ProductCard from '@/components/product/ProductCard';
 import { mockProducts } from '@/data/mockData';
 import { useApp } from '@/context/AppContext';
-import { Grid3X3, List } from 'lucide-react';
+import { Grid3X3, List, Star, ShoppingCart, Heart, X, Truck, Shield, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
 import type { Product } from '@/types';
 import PageBanner from '@/components/ui/PageBanner';
 import FilterAccordion from '@/components/ui/FilterAccordion';
+import StyledSelect from '@/components/ui/StyledSelect';
 
 export default function ProductsPage() {
+  const navigate = useNavigate();
   const { addToCart, wishlist, toggleWishlist } = useApp();
   const [priceRange, setPriceRange] = useState([0, 50000]);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedRating, setSelectedRating] = useState<string>('all');
   const [selectedBadges, setSelectedBadges] = useState<string[]>([]);
@@ -216,8 +220,8 @@ export default function ProductsPage() {
 
               <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                 {/* Sort Select */}
-                <select
-                  className="form-select w-full sm:w-48"
+                <StyledSelect
+                  className="w-full sm:w-48"
                   value={sortBy}
                   onChange={e => setSortBy(e.target.value)}
                 >
@@ -225,7 +229,7 @@ export default function ProductsPage() {
                   <option value="price-low-high">ราคา ต่ำ-สูง</option>
                   <option value="price-high-low">ราคา สูง-ต่ำ</option>
                   <option value="newest">ใหม่</option>
-                </select>
+                </StyledSelect>
 
                 {/* View Toggle */}
                 <div className="flex gap-2 bg-gray-100 p-1 rounded-lg">
@@ -247,34 +251,170 @@ export default function ProductsPage() {
               </div>
             </div>
 
-            {/* Products Grid */}
+            {/* Products */}
             {filteredProducts.length === 0 ? (
               <div className="card p-12 text-center">
                 <p className="text-gray-600 mb-4">ไม่พบสินค้าที่ตรงกับเงื่อนไขการค้นหา</p>
-                <button className="btn btn-outline" onClick={handleResetFilters}>
-                  รีเซ็ตตัวกรอง
-                </button>
+                <button className="btn btn-outline" onClick={handleResetFilters}>รีเซ็ตตัวกรอง</button>
               </div>
             ) : (
               <>
-                <div
-                  className={`${
-                    viewMode === 'grid'
-                      ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'
-                      : 'space-y-4'
-                  }`}
-                >
-                  {paginatedProducts.map(product => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      onAddToCart={handleAddToCart}
-                      isWishlisted={wishlist.includes(product.id)}
-                      onToggleWishlist={toggleWishlist}
-                      isAdded={addedToCart.includes(product.id)}
-                    />
-                  ))}
-                </div>
+                {viewMode === 'grid' ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {paginatedProducts.map(product => (
+                      <ProductCard
+                        key={product.id}
+                        product={product}
+                        onAddToCart={handleAddToCart}
+                        isWishlisted={wishlist.includes(product.id)}
+                        onToggleWishlist={toggleWishlist}
+                        isAdded={addedToCart.includes(product.id)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  /* List View — split panel on desktop */
+                  <div className="flex gap-6">
+                    {/* List */}
+                    <div className={`space-y-3 transition-all duration-300 ${selectedProduct ? 'hidden lg:block lg:w-1/2' : 'w-full'}`}>
+                      {paginatedProducts.map(product => {
+                        const isSelected = selectedProduct?.id === product.id;
+                        const discount = product.originalPrice
+                          ? Math.round((1 - product.price / product.originalPrice) * 100)
+                          : null;
+                        return (
+                          <div
+                            key={product.id}
+                            onClick={() => setSelectedProduct(isSelected ? null : product)}
+                            className={`bg-white rounded-2xl border transition-all duration-200 cursor-pointer flex gap-4 p-4 hover:shadow-md ${
+                              isSelected ? 'border-orange-400 shadow-md shadow-orange-500/10' : 'border-gray-100 hover:border-orange-200'
+                            }`}
+                          >
+                            {/* Image */}
+                            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden bg-gray-50 flex-shrink-0">
+                              <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                            </div>
+                            {/* Info */}
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs text-orange-500 font-semibold uppercase tracking-wide mb-0.5">{product.category}</p>
+                              <h3 className="font-bold text-gray-900 text-sm sm:text-base line-clamp-2 mb-1">{product.name}</h3>
+                              <div className="flex items-center gap-1 mb-2">
+                                <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                                <span className="text-xs text-gray-600">{product.rating} ({product.reviews?.toLocaleString()} รีวิว)</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-lg font-bold text-orange-500">฿{product.price.toLocaleString('th-TH')}</span>
+                                {product.originalPrice && (
+                                  <span className="text-xs text-gray-400 line-through">฿{product.originalPrice.toLocaleString('th-TH')}</span>
+                                )}
+                                {discount && <span className="badge bg-red-100 text-red-600 text-xs">ลด {discount}%</span>}
+                              </div>
+                            </div>
+                            {/* Actions */}
+                            <div className="flex flex-col gap-2 flex-shrink-0 justify-center">
+                              <button
+                                onClick={e => { e.stopPropagation(); handleAddToCart(product); }}
+                                className="btn btn-primary btn-sm px-3"
+                              >
+                                <ShoppingCart className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                onClick={e => { e.stopPropagation(); toggleWishlist(product.id); }}
+                                className="btn btn-outline btn-sm px-3"
+                              >
+                                <Heart className={`w-3.5 h-3.5 ${wishlist.includes(product.id) ? 'fill-orange-500 text-orange-500' : ''}`} />
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Detail Panel — desktop only */}
+                    {selectedProduct && (
+                      <div className="hidden lg:block lg:w-1/2">
+                        <div className="bg-white rounded-2xl border border-gray-100 shadow-md sticky top-24 overflow-hidden">
+                          {/* Close */}
+                          <button
+                            onClick={() => setSelectedProduct(null)}
+                            className="absolute top-4 right-4 z-10 w-8 h-8 bg-white/80 backdrop-blur rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors shadow-sm"
+                          >
+                            <X className="w-4 h-4 text-gray-600" />
+                          </button>
+
+                          {/* Image */}
+                          <div className="relative h-64 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+                            <img src={selectedProduct.image} alt={selectedProduct.name} className="w-full h-full object-cover" />
+                            {selectedProduct.badge && (
+                              <span className="absolute top-3 left-3 badge bg-red-500 text-white">{selectedProduct.badge}</span>
+                            )}
+                            {selectedProduct.isNew && (
+                              <span className="absolute top-3 left-3 badge bg-orange-500 text-white">ใหม่</span>
+                            )}
+                          </div>
+
+                          {/* Content */}
+                          <div className="p-5">
+                            <p className="text-xs text-orange-500 font-bold uppercase tracking-widest mb-1">{selectedProduct.category}</p>
+                            <h2 className="text-xl font-bold text-gray-900 mb-2">{selectedProduct.name}</h2>
+
+                            <div className="flex items-center gap-2 mb-4">
+                              <div className="flex">
+                                {[...Array(5)].map((_, i) => (
+                                  <Star key={i} className={`w-4 h-4 ${i < Math.floor(selectedProduct.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-200'}`} />
+                                ))}
+                              </div>
+                              <span className="text-sm text-gray-600">{selectedProduct.rating} ({selectedProduct.reviews?.toLocaleString()} รีวิว)</span>
+                            </div>
+
+                            <div className="flex items-end gap-3 mb-5">
+                              <span className="text-3xl font-bold text-orange-500">฿{selectedProduct.price.toLocaleString('th-TH')}</span>
+                              {selectedProduct.originalPrice && (
+                                <>
+                                  <span className="text-gray-400 line-through text-sm mb-1">฿{selectedProduct.originalPrice.toLocaleString('th-TH')}</span>
+                                  <span className="badge bg-red-100 text-red-600 mb-1">
+                                    ลด {Math.round((1 - selectedProduct.price / selectedProduct.originalPrice) * 100)}%
+                                  </span>
+                                </>
+                              )}
+                            </div>
+
+                            {/* Trust badges */}
+                            <div className="grid grid-cols-3 gap-2 mb-5">
+                              {[
+                                { icon: Truck, text: 'จัดส่งเร็ว' },
+                                { icon: Shield, text: 'รับประกัน' },
+                                { icon: RotateCcw, text: 'คืนสินค้าได้' },
+                              ].map(({ icon: Icon, text }) => (
+                                <div key={text} className="flex flex-col items-center gap-1 p-2 bg-orange-50 rounded-xl">
+                                  <Icon className="w-4 h-4 text-orange-500" />
+                                  <span className="text-xs text-gray-600 text-center">{text}</span>
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* Actions */}
+                            <div className="flex gap-2">
+                              <button
+                                className="btn btn-primary flex-1"
+                                onClick={() => handleAddToCart(selectedProduct)}
+                              >
+                                <ShoppingCart className="w-4 h-4" />
+                                เพิ่มลงตะกร้า
+                              </button>
+                              <button
+                                className="btn btn-outline px-3"
+                                onClick={() => navigate(`/products/${selectedProduct.id}`)}
+                              >
+                                ดูเพิ่มเติม
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {/* Pagination */}
                 {totalPages > 1 && (

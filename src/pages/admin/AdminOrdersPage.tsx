@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import StyledSelect from '@/components/ui/StyledSelect';
 import { mockOrders } from '@/data/mockData';
 import type { Order } from '@/types';
 
@@ -178,8 +179,7 @@ export default function AdminOrdersPage() {
 
                 <div className="space-y-3">
                   <label className="form-label">อัปเดตสถานะ</label>
-                  <select
-                    className="form-select"
+                  <StyledSelect
                     value={selectedStatus || ''}
                     onChange={(e) => setSelectedStatus(e.target.value as Order['status'])}
                   >
@@ -188,7 +188,7 @@ export default function AdminOrdersPage() {
                     <option value="shipped">จัดส่ง</option>
                     <option value="delivered">สำเร็จ</option>
                     <option value="cancelled">ยกเลิก</option>
-                  </select>
+                  </StyledSelect>
                   <button onClick={handleStatusUpdate} className="btn btn-primary w-full">
                     บันทึกสถานะ
                   </button>

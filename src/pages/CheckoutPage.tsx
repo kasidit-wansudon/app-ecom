@@ -8,6 +8,7 @@ import { AlertCircle, ShoppingCart } from 'lucide-react';
 import { toast } from 'sonner';
 import PageBanner from '@/components/ui/PageBanner';
 import EmptyState from '@/components/ui/EmptyState';
+import StyledSelect from '@/components/ui/StyledSelect';
 
 const checkoutSchema = z.object({
   fullName: z.string().min(2, 'กรุณากรอกชื่อ'),
@@ -231,18 +232,16 @@ export default function CheckoutPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="province" className="form-label">จังหวัด *</label>
-                    <select
+                    <StyledSelect
                       id="province"
                       {...register('province')}
-                      className={`form-select ${errors.province ? 'border-red-500' : ''}`}
+                      error={!!errors.province}
                     >
                       <option value="">เลือกจังหวัด</option>
                       {provinces.map(prov => (
-                        <option key={prov} value={prov}>
-                          {prov}
-                        </option>
+                        <option key={prov} value={prov}>{prov}</option>
                       ))}
-                    </select>
+                    </StyledSelect>
                     {errors.province && (
                       <p className="form-error">{errors.province.message}</p>
                     )}

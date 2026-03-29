@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import StyledSelect from '@/components/ui/StyledSelect';
 import { Edit, Trash2 } from 'lucide-react';
 import { mockProducts, mockCategories } from '@/data/mockData';
 import type { Product } from '@/types';
@@ -142,8 +143,8 @@ export default function AdminProductsPage() {
             </div>
             <div className="form-group">
               <label className="form-label">หมวดหมู่</label>
-              <select
-                className="form-select"
+              <StyledSelect
+                
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
               >
@@ -151,19 +152,19 @@ export default function AdminProductsPage() {
                 {mockCategories.map((cat) => (
                   <option key={cat.id} value={cat.name}>{cat.name}</option>
                 ))}
-              </select>
+              </StyledSelect>
             </div>
             <div className="form-group">
               <label className="form-label">สถานะ</label>
-              <select
-                className="form-select"
+              <StyledSelect
+                
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
                 <option value="all">ทั้งหมด</option>
                 <option value="active">พร้อมขาย</option>
                 <option value="inactive">ปิด</option>
-              </select>
+              </StyledSelect>
             </div>
           </div>
           {selectedProducts.length > 0 && (
@@ -261,9 +262,9 @@ export default function AdminProductsPage() {
               </div>
               <div className="form-group">
                 <label className="form-label" htmlFor="category">หมวดหมู่</label>
-                <select
+                <StyledSelect
                   id="category"
-                  className="form-select"
+                  
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                 >
@@ -271,7 +272,7 @@ export default function AdminProductsPage() {
                   {mockCategories.map((cat) => (
                     <option key={cat.id} value={cat.name}>{cat.name}</option>
                   ))}
-                </select>
+                </StyledSelect>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="form-group">

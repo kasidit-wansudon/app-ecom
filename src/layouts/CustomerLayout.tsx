@@ -3,6 +3,7 @@ import Navigation from '@/sections/Navigation';
 import Footer from '@/sections/Footer';
 import { Toaster } from 'sonner';
 import { useApp } from '@/context/AppContext';
+import PageTransition from '@/components/ui/PageTransition';
 
 export default function CustomerLayout() {
   const { scrollProgress } = useApp();
@@ -17,7 +18,9 @@ export default function CustomerLayout() {
 
       <Navigation />
       <main className="flex-1 pt-20">
-        <Outlet />
+        <PageTransition>
+          <Outlet />
+        </PageTransition>
       </main>
       <Footer />
 

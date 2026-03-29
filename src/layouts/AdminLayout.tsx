@@ -1,4 +1,5 @@
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import PageTransition from '@/components/ui/PageTransition';
 import { Toaster } from 'sonner';
 import {
   LayoutDashboard,
@@ -118,7 +119,9 @@ export default function AdminLayout() {
         {/* Page Content */}
         <div className="flex-1 overflow-auto">
           <div className="p-6">
-            <Outlet />
+            <PageTransition>
+              <Outlet />
+            </PageTransition>
           </div>
         </div>
       </div>

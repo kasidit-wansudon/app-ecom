@@ -47,9 +47,13 @@ export default function FilterAccordion({ title, defaultOpen = false, children }
 
       <div
         ref={contentRef}
-        style={{ height, overflow: 'hidden', transition: 'height 0.3s cubic-bezier(0.4,0,0.2,1)' }}
+        style={{
+          height,
+          overflow: height === 'auto' ? 'visible' : 'hidden',
+          transition: 'height 0.3s cubic-bezier(0.4,0,0.2,1)',
+        }}
       >
-        <div className="pb-4 space-y-2.5">
+        <div className="pb-4 space-y-2.5 px-0.5">
           {children}
         </div>
       </div>

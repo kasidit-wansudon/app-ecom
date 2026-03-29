@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/context/AppContext';
-import { Trash2, Minus, Plus, ShoppingCart } from 'lucide-react';
+import { Trash2, Minus, Plus, ShoppingCart, Tag, Truck, Shield } from 'lucide-react';
 import { toast } from 'sonner';
+import PageBanner from '@/components/ui/PageBanner';
+import EmptyState from '@/components/ui/EmptyState';
 
 export default function CartPage() {
   const navigate = useNavigate();
@@ -37,173 +39,175 @@ export default function CartPage() {
 
   if (cartItems.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 flex items-center justify-center py-12">
-        <div className="card text-center p-8 max-w-md">
-          <ShoppingCart className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">ตะกร้าว่างเปล่า</h1>
-          <p className="text-gray-600 mb-6">
-            คุณยังไม่ได้เพิ่มสินค้าลงในตะกร้า กลับไปเลือกสินค้าและเพิ่มลงตะกร้า
-          </p>
-          <button
-            className="btn btn-primary w-full"
-            onClick={() => navigate('/products')}
-          >
-            ไปเลือกสินค้า
-          </button>
-        </div>
-      </div>
+      <>
+        <PageBanner
+          title="ตะกร้าสินค้า"
+          subtitle="รวมสินค้าที่คุณต้องการซื้อไว้ที่นี่"
+          size="sm"
+        />
+        <EmptyState
+          icon={ShoppingCart}
+          title="ตะกร้าว่างเปล่า"
+          description="คุณยังไม่ได้เพิ่มสินค้าลงในตะกร้า กลับไปเลือกสินค้าที่คุณชอบแล้วเพิ่มลงตะกร้า"
+          actionLabel="ไปเลือกสินค้า"
+          onAction={() => navigate('/products')}
+        />
+      </>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-8">
-          ตะกร้าสินค้า ({cartItems.length} รายการ)
-        </h1>
+    <>
+      <PageBanner
+        title="ตะกร้าสินค้า"
+        titleHighlight={`(${cartItems.length} รายการ)`}
+        subtitle="ตรวจสอบสินค้าและดำเนินการชำระเงิน"
+        size="sm"
+      />
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Cart Items - Left */}
-          <div className="lg:col-span-2 space-y-4">
-            {cartItems.map(item => (
-              <div
-                key={item.product.id}
-                className={`card p-4 sm:p-6 flex gap-4 transition-all ${
-                  removingId === item.product.id ? 'opacity-50' : ''
-                }`}
-              >
-                {/* Product Image */}
-                <div className="flex-shrink-0 w-24 h-24 sm:w-32 sm:h-32 rounded-lg overflow-hidden bg-gray-100">
-                  <img
-                    src={item.product.image}
-                    alt={item.product.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+      <div className="bg-gray-50 min-h-screen py-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Cart Items */}
+            <div className="lg:col-span-2 space-y-4">
+              {cartItems.map(item => (
+                <div
+                  key={item.product.id}
+                  className={`bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all p-5 flex gap-4 ${
+                    removingId === item.product.id ? 'opacity-40 scale-95' : ''
+                  }`}
+                >
+                  {/* Image */}
+                  <div className="flex-shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden bg-gray-50">
+                    <img
+                      src={item.product.image}
+                      alt={item.product.name}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
 
-                {/* Product Info */}
-                <div className="flex-1 flex flex-col justify-between">
-                  <div>
-                    <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">
-                      {item.product.category}
+                  {/* Info */}
+                  <div className="flex-1 flex flex-col justify-between min-w-0">
+                    <div>
+                      <p className="text-xs font-semibold text-orange-500 uppercase tracking-wide mb-1">
+                        {item.product.category}
+                      </p>
+                      <h3 className="font-bold text-gray-900 leading-snug line-clamp-2">
+                        {item.product.name}
+                      </h3>
+                    </div>
+                    <p className="text-xl font-bold text-orange-500 mt-2">
+                      ฿{item.product.price.toLocaleString('th-TH')}
                     </p>
-                    <h3 className="font-bold text-gray-900 mb-2 line-clamp-2">
-                      {item.product.name}
-                    </h3>
                   </div>
 
-                  {/* Price */}
-                  <p className="text-lg font-bold text-orange-500">
-                    ฿{item.product.price.toLocaleString()}
-                  </p>
-                </div>
+                  {/* Qty & Actions */}
+                  <div className="flex flex-col items-end justify-between gap-3 flex-shrink-0">
+                    <div className="flex items-center rounded-xl border border-gray-200 overflow-hidden">
+                      <button
+                        onClick={() => handleUpdateQuantity(item.product.id, item.quantity - 1)}
+                        className="w-9 h-9 flex items-center justify-center hover:bg-orange-50 hover:text-orange-600 transition-colors"
+                      >
+                        <Minus className="w-4 h-4" />
+                      </button>
+                      <span className="w-10 text-center font-bold text-sm">{item.quantity}</span>
+                      <button
+                        onClick={() => handleUpdateQuantity(item.product.id, item.quantity + 1)}
+                        className="w-9 h-9 flex items-center justify-center hover:bg-orange-50 hover:text-orange-600 transition-colors"
+                      >
+                        <Plus className="w-4 h-4" />
+                      </button>
+                    </div>
 
-                {/* Quantity & Actions */}
-                <div className="flex flex-col items-end gap-3">
-                  {/* Quantity Control */}
-                  <div className="flex items-center border border-gray-300 rounded-lg">
-                    <button
-                      onClick={() =>
-                        handleUpdateQuantity(item.product.id, item.quantity - 1)
-                      }
-                      className="p-1.5 hover:bg-gray-100"
-                    >
-                      <Minus className="w-4 h-4" />
-                    </button>
-                    <span className="px-4 py-1.5 text-center font-semibold w-12">
-                      {item.quantity}
-                    </span>
-                    <button
-                      onClick={() =>
-                        handleUpdateQuantity(item.product.id, item.quantity + 1)
-                      }
-                      className="p-1.5 hover:bg-gray-100"
-                    >
-                      <Plus className="w-4 h-4" />
-                    </button>
-                  </div>
-
-                  {/* Subtotal & Remove */}
-                  <div className="text-right space-y-2">
-                    <p className="text-sm text-gray-600">
-                      รวม: ฿{(item.product.price * item.quantity).toLocaleString()}
-                    </p>
-                    <button
-                      onClick={() => handleRemove(item.product.id)}
-                      className="text-red-500 hover:text-red-600 transition-colors flex items-center gap-1 text-sm"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                      ลบ
-                    </button>
+                    <div className="text-right">
+                      <p className="text-sm font-semibold text-gray-900">
+                        ฿{(item.product.price * item.quantity).toLocaleString('th-TH')}
+                      </p>
+                      <button
+                        onClick={() => handleRemove(item.product.id)}
+                        className="mt-1 text-xs text-red-400 hover:text-red-600 transition-colors flex items-center gap-1"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                        ลบ
+                      </button>
+                    </div>
                   </div>
                 </div>
+              ))}
+
+              {/* Trust badges */}
+              <div className="grid grid-cols-3 gap-4 mt-2">
+                {[
+                  { icon: Truck, text: 'จัดส่งภายใน 24 ชม.' },
+                  { icon: Shield, text: 'รับประกันสินค้า' },
+                  { icon: Tag, text: 'ราคาดีที่สุด' },
+                ].map(({ icon: Icon, text }) => (
+                  <div key={text} className="flex items-center gap-2 bg-white rounded-xl p-3 border border-gray-100 shadow-sm">
+                    <Icon className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                    <span className="text-xs text-gray-600">{text}</span>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
 
-          {/* Summary - Right */}
-          <div className="lg:col-span-1">
-            <div className="card p-6 sticky top-20 space-y-4">
-              {/* Summary Details */}
-              <div>
-                <h2 className="text-xl font-bold text-gray-900 mb-4">สรุปคำสั่งซื้อ</h2>
+            {/* Summary */}
+            <div className="lg:col-span-1">
+              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sticky top-24">
+                <h2 className="text-xl font-bold text-gray-900 mb-5 pb-4 border-b border-gray-100">
+                  สรุปคำสั่งซื้อ
+                </h2>
 
                 <div className="space-y-3 mb-4">
-                  <div className="flex justify-between text-gray-600">
-                    <span>ราคาสินค้า</span>
-                    <span>฿{cartTotal.toLocaleString()}</span>
+                  <div className="flex justify-between text-gray-600 text-sm">
+                    <span>ราคาสินค้า ({cartItems.length} ชิ้น)</span>
+                    <span>฿{cartTotal.toLocaleString('th-TH')}</span>
                   </div>
-
-                  {shipping > 0 && (
-                    <div className="flex justify-between text-gray-600">
-                      <span>ค่าจัดส่ง</span>
-                      <span>฿{shipping.toLocaleString()}</span>
-                    </div>
-                  )}
-
+                  <div className="flex justify-between text-gray-600 text-sm">
+                    <span>ค่าจัดส่ง</span>
+                    <span>{shipping > 0 ? `฿${shipping}` : 'ฟรี'}</span>
+                  </div>
                   {discount > 0 && (
-                    <div className="flex justify-between text-green-600 font-medium">
-                      <span>ส่วนลด</span>
-                      <span>-฿{discount.toLocaleString()}</span>
+                    <div className="flex justify-between text-green-600 text-sm font-medium">
+                      <span>ส่วนลด 5%</span>
+                      <span>-฿{discount.toLocaleString('th-TH')}</span>
                     </div>
                   )}
                 </div>
 
-                <hr className="divider my-4" />
-
-                <div className="flex justify-between text-xl font-bold text-gray-900 mb-6">
-                  <span>รวมทั้งสิ้น</span>
-                  <span className="text-orange-500">฿{total.toLocaleString()}</span>
+                <div className="border-t border-gray-100 pt-4 mb-6">
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-gray-900">รวมทั้งสิ้น</span>
+                    <span className="text-2xl font-bold text-orange-500">
+                      ฿{total.toLocaleString('th-TH')}
+                    </span>
+                  </div>
                 </div>
+
+                <button
+                  className="btn btn-primary w-full h-12 text-base font-semibold shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 mb-3"
+                  onClick={handleCheckout}
+                >
+                  ดำเนินการชำระเงิน
+                </button>
+                <button
+                  className="btn btn-outline w-full"
+                  onClick={() => navigate('/products')}
+                >
+                  เลือกสินค้าเพิ่มเติม
+                </button>
+
+                {cartTotal <= 5000 && (
+                  <div className="mt-4 p-3 bg-orange-50 rounded-xl text-xs text-orange-700 text-center">
+                    ซื้อเพิ่มอีก{' '}
+                    <strong>฿{(5000 - cartTotal).toLocaleString('th-TH')}</strong>{' '}
+                    เพื่อรับส่วนลด 5%!
+                  </div>
+                )}
               </div>
-
-              {/* Checkout Button */}
-              <button
-                className="btn btn-primary w-full h-12"
-                onClick={handleCheckout}
-              >
-                ดำเนินการชำระเงิน
-              </button>
-
-              {/* Continue Shopping */}
-              <button
-                className="btn btn-outline w-full"
-                onClick={() => navigate('/products')}
-              >
-                เลือกสินค้าเพิ่มเติม
-              </button>
-
-              {/* Discount Info */}
-              {cartTotal <= 5000 && (
-                <div className="p-3 bg-orange-50 rounded-lg text-sm text-orange-700">
-                  ซื้อเพิ่มอีก ฿{(5000 - cartTotal).toLocaleString()} เพื่อได้ส่วนลด 5%
-                </div>
-              )}
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

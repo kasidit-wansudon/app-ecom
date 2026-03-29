@@ -128,14 +128,15 @@ export default function PromoBanner() {
       ref={sectionRef}
       className="relative py-20 lg:py-28 overflow-hidden"
     >
-      {/* Diagonal Split Background */}
+      {/* Background — diagonal on desktop, gradient on mobile */}
       <div className="absolute inset-0">
-        {/* Left Side - Dark */}
-        <div className="promo-bg-left absolute inset-0 bg-gray-900" style={{ clipPath: 'polygon(0 0, 60% 0, 45% 100%, 0 100%)' }} />
+        {/* Mobile: simple gradient */}
+        <div className="lg:hidden absolute inset-0 bg-gradient-to-b from-gray-900 via-gray-900 to-orange-600" />
 
-        {/* Right Side - Orange Gradient */}
+        {/* Desktop: diagonal split */}
+        <div className="promo-bg-left hidden lg:block absolute inset-0 bg-gray-900" style={{ clipPath: 'polygon(0 0, 60% 0, 45% 100%, 0 100%)' }} />
         <div
-          className="promo-bg-right absolute inset-0 bg-gradient-to-br from-orange-500 to-orange-600"
+          className="promo-bg-right hidden lg:block absolute inset-0 bg-gradient-to-br from-orange-500 to-orange-600"
           style={{ clipPath: 'polygon(60% 0, 100% 0, 100% 100%, 45% 100%)' }}
         />
 
@@ -187,7 +188,7 @@ export default function PromoBanner() {
             </div>
 
             {/* Countdown Timer */}
-            <div className="flex gap-4">
+            <div className="flex gap-2 sm:gap-4">
               {[
                 { value: timeLeft.days, label: 'วัน' },
                 { value: timeLeft.hours, label: 'ชม.' },
@@ -201,7 +202,7 @@ export default function PromoBanner() {
                   }`}
                 >
                   <div
-                    className={`w-20 h-24 sm:w-24 sm:h-28 flex items-center justify-center rounded-2xl text-3xl sm:text-4xl font-bold ${
+                    className={`w-16 h-20 sm:w-20 sm:h-24 lg:w-24 lg:h-28 flex items-center justify-center rounded-xl sm:rounded-2xl text-2xl sm:text-3xl lg:text-4xl font-bold ${
                       isUrgent
                         ? 'bg-red-500/20 border-2 border-red-500 text-red-400'
                         : 'bg-white/10 backdrop-blur-sm text-white border border-white/20'
@@ -209,7 +210,7 @@ export default function PromoBanner() {
                   >
                     {String(item.value).padStart(2, '0')}
                   </div>
-                  <span className="text-white/60 text-sm mt-2">{item.label}</span>
+                  <span className="text-white/60 text-xs sm:text-sm mt-2">{item.label}</span>
                 </div>
               ))}
             </div>

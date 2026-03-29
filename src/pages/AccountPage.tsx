@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { toast } from 'sonner';
 import { ShoppingBag, DollarSign, Zap } from 'lucide-react';
+import PageBanner from '@/components/ui/PageBanner';
 
 const personalInfoSchema = z.object({
   name: z.string().min(2, 'กรุณากรอกชื่อ'),
@@ -75,12 +76,15 @@ export default function AccountPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-8">
+    <>
+      <PageBanner
+        title="บัญชี"
+        titleHighlight="ของฉัน"
+        subtitle="จัดการข้อมูลส่วนตัว ความปลอดภัย และการแจ้งเตือน"
+        size="sm"
+      />
+    <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-8">
-          บัญชีของฉัน
-        </h1>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
@@ -370,5 +374,6 @@ export default function AccountPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

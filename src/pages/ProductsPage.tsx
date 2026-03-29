@@ -5,6 +5,7 @@ import { useApp } from '@/context/AppContext';
 import { Grid3X3, List, ChevronDown, ChevronUp } from 'lucide-react';
 import { toast } from 'sonner';
 import type { Product } from '@/types';
+import PageBanner from '@/components/ui/PageBanner';
 
 export default function ProductsPage() {
   const { addToCart, wishlist, toggleWishlist } = useApp();
@@ -101,13 +102,15 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-8">
+    <>
+      <PageBanner
+        title="สินค้า"
+        titleHighlight="ทั้งหมด"
+        subtitle={`พบสินค้า ${filteredProducts.length} รายการ — เลือกกรองตามที่ต้องการ`}
+        size="sm"
+      />
+    <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">สินค้าทั้งหมด</h1>
-          <p className="text-gray-600">พบสินค้า {filteredProducts.length} รายการ</p>
-        </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar Filters */}
@@ -395,5 +398,6 @@ export default function ProductsPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

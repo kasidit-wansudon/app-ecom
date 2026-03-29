@@ -4,8 +4,10 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useApp } from '@/context/AppContext';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, ShoppingCart } from 'lucide-react';
 import { toast } from 'sonner';
+import PageBanner from '@/components/ui/PageBanner';
+import EmptyState from '@/components/ui/EmptyState';
 
 const checkoutSchema = z.object({
   fullName: z.string().min(2, 'กรุณากรอกชื่อ'),
@@ -84,29 +86,29 @@ export default function CheckoutPage() {
 
   if (cartItems.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 flex items-center justify-center py-12">
-        <div className="card text-center p-8 max-w-md">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">ตะกร้าว่างเปล่า</h1>
-          <p className="text-gray-600 mb-6">
-            กรุณาเพิ่มสินค้าลงในตะกร้าก่อนชำระเงิน
-          </p>
-          <button
-            className="btn btn-primary w-full"
-            onClick={() => navigate('/products')}
-          >
-            กลับไปเลือกสินค้า
-          </button>
-        </div>
-      </div>
+      <>
+        <PageBanner title="ชำระเงิน" size="sm" />
+        <EmptyState
+          icon={ShoppingCart}
+          title="ตะกร้าว่างเปล่า"
+          description="กรุณาเพิ่มสินค้าลงในตะกร้าก่อนชำระเงิน"
+          actionLabel="กลับไปเลือกสินค้า"
+          onAction={() => navigate('/products')}
+        />
+      </>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-8">
+    <>
+      <PageBanner
+        title="ชำระ"
+        titleHighlight="เงิน"
+        subtitle="กรอกข้อมูลการจัดส่งและเลือกวิธีชำระเงิน"
+        size="sm"
+      />
+    <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-8">
-          ชำระเงิน
-        </h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Form - Left */}
@@ -429,5 +431,6 @@ export default function CheckoutPage() {
         </form>
       </div>
     </div>
+    </>
   );
 }

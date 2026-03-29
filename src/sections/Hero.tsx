@@ -191,17 +191,17 @@ export default function Hero() {
             </div>
 
             {/* Trust Badges */}
-            <div className="flex flex-wrap justify-center lg:justify-start gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 lg:gap-4">
               {trustBadges.map((badge, index) => (
                 <div
                   key={index}
-                  className="trust-badge flex items-center gap-3 px-4 py-3 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
+                  className="trust-badge flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
                 >
-                  <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                    <badge.icon className="w-5 h-5 text-orange-500" />
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <badge.icon className="w-4 h-4 sm:w-5 sm:h-5 text-orange-500" />
                   </div>
                   <div>
-                    <div className="font-bold text-gray-900">{badge.value}</div>
+                    <div className="font-bold text-gray-900 text-sm sm:text-base">{badge.value}</div>
                     <div className="text-xs text-gray-500">{badge.label}</div>
                   </div>
                 </div>
@@ -219,7 +219,7 @@ export default function Hero() {
           >
             {/* Main Product Card */}
             <div
-              className="hero-product relative w-80 h-[450px] bg-white rounded-3xl shadow-2xl overflow-hidden cursor-pointer"
+              className="hero-product relative w-64 sm:w-72 lg:w-80 h-[380px] sm:h-[420px] lg:h-[450px] bg-white rounded-3xl shadow-2xl overflow-hidden cursor-pointer"
               style={{
                 transform: `rotateX(${mousePosition.y}deg) rotateY(${mousePosition.x}deg)`,
                 transition: 'transform 0.1s ease-out',
@@ -270,31 +270,31 @@ export default function Hero() {
               <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent pointer-events-none shimmer" />
             </div>
 
-            {/* Floating Elements */}
+            {/* Floating Elements — hidden on very small screens */}
             <div
-              className="floating-element absolute -top-4 -right-4 w-20 h-20 bg-orange-500 rounded-2xl flex items-center justify-center shadow-lg float"
+              className="floating-element hidden sm:flex absolute -top-4 -right-2 lg:-right-4 w-16 h-16 lg:w-20 lg:h-20 bg-orange-500 rounded-2xl items-center justify-center shadow-lg float"
               style={{ animationDelay: '0.5s' }}
             >
-              <Star className="w-10 h-10 text-white fill-white" />
+              <Star className="w-8 h-8 lg:w-10 lg:h-10 text-white fill-white" />
             </div>
 
             <div
-              className="floating-element absolute -bottom-4 -left-4 w-16 h-16 bg-white rounded-xl flex items-center justify-center shadow-lg float"
+              className="floating-element hidden sm:flex absolute -bottom-4 -left-2 lg:-left-4 w-14 h-14 lg:w-16 lg:h-16 bg-white rounded-xl items-center justify-center shadow-lg float"
               style={{ animationDelay: '1s' }}
             >
-              <span className="text-2xl font-bold text-orange-500">4.9</span>
+              <span className="text-xl lg:text-2xl font-bold text-orange-500">4.9</span>
             </div>
 
             <div
-              className="floating-element absolute top-1/2 -right-8 w-14 h-14 bg-gradient-to-br from-pink-400 to-orange-400 rounded-full flex items-center justify-center shadow-lg float"
+              className="floating-element hidden lg:flex absolute top-1/2 -right-8 w-14 h-14 bg-gradient-to-br from-pink-400 to-orange-400 rounded-full items-center justify-center shadow-lg float"
               style={{ animationDelay: '1.5s' }}
             >
               <span className="text-white text-xs font-bold">HOT</span>
             </div>
 
-            {/* Background Decorative Elements */}
-            <div className="absolute -z-10 w-[500px] h-[500px] border-2 border-orange-200/50 rounded-full animate-spin" style={{ animationDuration: '30s' }} />
-            <div className="absolute -z-10 w-[400px] h-[400px] border border-orange-300/30 rounded-full animate-spin" style={{ animationDuration: '20s', animationDirection: 'reverse' }} />
+            {/* Background Decorative Rings — hidden on mobile to avoid overflow */}
+            <div className="hidden lg:block absolute -z-10 w-[500px] h-[500px] border-2 border-orange-200/50 rounded-full animate-spin" style={{ animationDuration: '30s' }} />
+            <div className="hidden lg:block absolute -z-10 w-[400px] h-[400px] border border-orange-300/30 rounded-full animate-spin" style={{ animationDuration: '20s', animationDirection: 'reverse' }} />
           </div>
         </div>
       </div>

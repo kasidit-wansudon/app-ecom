@@ -2,10 +2,11 @@ import { useState, useMemo } from 'react';
 import ProductCard from '@/components/product/ProductCard';
 import { mockProducts } from '@/data/mockData';
 import { useApp } from '@/context/AppContext';
-import { Grid3X3, List, ChevronDown, ChevronUp } from 'lucide-react';
+import { Grid3X3, List } from 'lucide-react';
 import { toast } from 'sonner';
 import type { Product } from '@/types';
 import PageBanner from '@/components/ui/PageBanner';
+import FilterAccordion from '@/components/ui/FilterAccordion';
 
 export default function ProductsPage() {
   const { addToCart, wishlist, toggleWishlist } = useApp();
@@ -18,9 +19,6 @@ export default function ProductsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
   const [addedToCart, setAddedToCart] = useState<number[]>([]);
-
-  // Accordion state
-  const [openAccordion, setOpenAccordion] = useState<string | null>('category');
 
   const categories = Array.from(new Set(mockProducts.map(p => p.category)));
 
@@ -97,10 +95,6 @@ export default function ProductsPage() {
     });
   };
 
-  const toggleAccordion = (key: string) => {
-    setOpenAccordion(prev => (prev === key ? null : key));
-  };
-
   return (
     <>
       <PageBanner
@@ -114,168 +108,92 @@ export default function ProductsPage() {
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar Filters */}
-          <aside className="w-full lg:w-72 flex-shrink-0">
-            <div className="card p-6 sticky top-20">
-              {/* Category Accordion */}
-              <div className="border-b pb-2 mb-2">
-                <button
-                  className="flex items-center justify-between w-full py-2 font-medium text-gray-900"
-                  onClick={() => toggleAccordion('category')}
-                >
-                  <span>หมวดหมู่</span>
-                  {openAccordion === 'category' ? (
-                    <ChevronUp className="w-4 h-4" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4" />
-                  )}
-                </button>
-                {openAccordion === 'category' && (
-                  <div className="space-y-3 mt-2 pb-2">
-                    <div className="flex items-center">
-                      <input
-                        type="radio"
-                        id="category-all"
-                        name="category"
-                        checked={selectedCategory === 'all'}
-                        onChange={() => setSelectedCategory('all')}
-                        className="form-radio"
-                      />
-                      <label htmlFor="category-all" className="ml-2 text-sm cursor-pointer">
-                        ทั้งหมด
-                      </label>
-                    </div>
-                    {categories.map(cat => (
-                      <div key={cat} className="flex items-center">
-                        <input
-                          type="radio"
-                          id={`category-${cat}`}
-                          name="category"
-                          checked={selectedCategory === cat}
-                          onChange={() => setSelectedCategory(cat)}
-                          className="form-radio"
-                        />
-                        <label htmlFor={`category-${cat}`} className="ml-2 text-sm cursor-pointer">
-                          {cat}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+          <aside className="w-full lg:w-64 flex-shrink-0">
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 sticky top-24">
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">ตัวกรอง</p>
 
-              {/* Price Accordion */}
-              <div className="border-b pb-2 mb-2">
-                <button
-                  className="flex items-center justify-between w-full py-2 font-medium text-gray-900"
-                  onClick={() => toggleAccordion('price')}
-                >
-                  <span>ราคา</span>
-                  {openAccordion === 'price' ? (
-                    <ChevronUp className="w-4 h-4" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4" />
-                  )}
-                </button>
-                {openAccordion === 'price' && (
-                  <div className="space-y-4 mt-2 pb-2">
+              <FilterAccordion title="หมวดหมู่" defaultOpen>
+                {[{ value: 'all', label: 'ทั้งหมด' }, ...categories.map(c => ({ value: c, label: c }))].map(opt => (
+                  <label key={opt.value} className="flex items-center gap-2.5 cursor-pointer group">
                     <input
-                      type="range"
-                      min={0}
-                      max={50000}
-                      step={100}
-                      value={priceRange[1]}
-                      onChange={e => setPriceRange([priceRange[0], Number(e.target.value)])}
-                      className="w-full accent-orange-500"
+                      type="radio"
+                      name="category"
+                      checked={selectedCategory === opt.value}
+                      onChange={() => setSelectedCategory(opt.value)}
+                      className="form-radio accent-orange-500"
                     />
-                    <div className="flex gap-2 text-sm">
-                      <span>฿{priceRange[0].toLocaleString()}</span>
-                      <span>-</span>
-                      <span>฿{priceRange[1].toLocaleString()}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
+                    <span className={`text-sm transition-colors ${selectedCategory === opt.value ? 'text-orange-600 font-semibold' : 'text-gray-600 group-hover:text-gray-900'}`}>
+                      {opt.label}
+                    </span>
+                  </label>
+                ))}
+              </FilterAccordion>
 
-              {/* Rating Accordion */}
-              <div className="border-b pb-2 mb-2">
-                <button
-                  className="flex items-center justify-between w-full py-2 font-medium text-gray-900"
-                  onClick={() => toggleAccordion('rating')}
-                >
-                  <span>ระดับคะแนน</span>
-                  {openAccordion === 'rating' ? (
-                    <ChevronUp className="w-4 h-4" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4" />
-                  )}
-                </button>
-                {openAccordion === 'rating' && (
-                  <div className="space-y-3 mt-2 pb-2">
-                    {[
-                      { value: 'all', label: 'ทั้งหมด' },
-                      { value: '4.5', label: '4.5+ ดาว' },
-                      { value: '4', label: '4+ ดาว' },
-                      { value: '3.5', label: '3.5+ ดาว' },
-                    ].map(opt => (
-                      <div key={opt.value} className="flex items-center space-x-2">
-                        <input
-                          type="radio"
-                          id={`rating-${opt.value}`}
-                          name="rating"
-                          value={opt.value}
-                          checked={selectedRating === opt.value}
-                          onChange={() => setSelectedRating(opt.value)}
-                          className="form-radio"
-                        />
-                        <label htmlFor={`rating-${opt.value}`} className="form-label cursor-pointer">
-                          {opt.label}
-                        </label>
-                      </div>
-                    ))}
+              <FilterAccordion title="ราคา" defaultOpen>
+                <div className="space-y-3">
+                  <input
+                    type="range"
+                    min={0}
+                    max={50000}
+                    step={500}
+                    value={priceRange[1]}
+                    onChange={e => setPriceRange([0, Number(e.target.value)])}
+                    className="w-full h-1.5 rounded-full appearance-none cursor-pointer accent-orange-500"
+                    style={{
+                      background: `linear-gradient(to right, #f97316 0%, #f97316 ${(priceRange[1] / 50000) * 100}%, #e5e7eb ${(priceRange[1] / 50000) * 100}%, #e5e7eb 100%)`
+                    }}
+                  />
+                  <div className="flex justify-between text-sm font-medium">
+                    <span className="text-gray-500">฿0</span>
+                    <span className="text-orange-600">฿{priceRange[1].toLocaleString('th-TH')}</span>
                   </div>
-                )}
-              </div>
+                </div>
+              </FilterAccordion>
 
-              {/* Badges Accordion */}
-              <div className="pb-2 mb-2">
-                <button
-                  className="flex items-center justify-between w-full py-2 font-medium text-gray-900"
-                  onClick={() => toggleAccordion('badges')}
-                >
-                  <span>ป้ายกำกับ</span>
-                  {openAccordion === 'badges' ? (
-                    <ChevronUp className="w-4 h-4" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4" />
-                  )}
-                </button>
-                {openAccordion === 'badges' && (
-                  <div className="space-y-2 mt-2 pb-2">
-                    {[
-                      { id: 'badge-new', key: 'new', label: 'ใหม่' },
-                      { id: 'badge-bestseller', key: 'bestseller', label: 'ขายดี' },
-                      { id: 'badge-sale', key: 'sale', label: 'ลดราคา' },
-                    ].map(badge => (
-                      <div key={badge.id} className="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          id={badge.id}
-                          checked={selectedBadges.includes(badge.key)}
-                          onChange={() => toggleBadge(badge.key)}
-                          className="form-checkbox"
-                        />
-                        <label htmlFor={badge.id} className="form-label cursor-pointer">
-                          {badge.label}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <FilterAccordion title="ระดับคะแนน">
+                {[
+                  { value: 'all', label: 'ทั้งหมด' },
+                  { value: '4.5', label: '⭐ 4.5+ ดาว' },
+                  { value: '4', label: '⭐ 4+ ดาว' },
+                  { value: '3.5', label: '⭐ 3.5+ ดาว' },
+                ].map(opt => (
+                  <label key={opt.value} className="flex items-center gap-2.5 cursor-pointer group">
+                    <input
+                      type="radio"
+                      name="rating"
+                      checked={selectedRating === opt.value}
+                      onChange={() => setSelectedRating(opt.value)}
+                      className="form-radio accent-orange-500"
+                    />
+                    <span className={`text-sm transition-colors ${selectedRating === opt.value ? 'text-orange-600 font-semibold' : 'text-gray-600 group-hover:text-gray-900'}`}>
+                      {opt.label}
+                    </span>
+                  </label>
+                ))}
+              </FilterAccordion>
 
-              {/* Reset Button */}
+              <FilterAccordion title="ป้ายกำกับ">
+                {[
+                  { key: 'new', label: '🆕 ใหม่' },
+                  { key: 'bestseller', label: '🔥 ขายดี' },
+                  { key: 'sale', label: '🏷️ ลดราคา' },
+                ].map(badge => (
+                  <label key={badge.key} className="flex items-center gap-2.5 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={selectedBadges.includes(badge.key)}
+                      onChange={() => toggleBadge(badge.key)}
+                      className="form-checkbox accent-orange-500 rounded"
+                    />
+                    <span className={`text-sm transition-colors ${selectedBadges.includes(badge.key) ? 'text-orange-600 font-semibold' : 'text-gray-600 group-hover:text-gray-900'}`}>
+                      {badge.label}
+                    </span>
+                  </label>
+                ))}
+              </FilterAccordion>
+
               <button
-                className="btn btn-outline w-full mt-6"
+                className="btn btn-outline w-full mt-4 text-xs"
                 onClick={handleResetFilters}
               >
                 รีเซ็ตตัวกรอง

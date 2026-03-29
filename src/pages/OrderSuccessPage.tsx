@@ -155,14 +155,14 @@ export default function OrderSuccessPage() {
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           <button
-            className="btn btn-primary flex-1 h-12 text-base font-semibold shadow-lg shadow-orange-500/20"
+            className="btn btn-primary flex-1"
             onClick={() => navigate('/account/orders')}
           >
             ดูสถานะคำสั่งซื้อ
             <ArrowRight className="w-4 h-4" />
           </button>
           <button
-            className="btn btn-outline flex-1 h-12"
+            className="btn btn-outline flex-1"
             onClick={() => navigate('/products')}
           >
             เลือกสินค้าเพิ่มเติม

@@ -184,7 +184,7 @@ export default function CartPage() {
                 </div>
 
                 <button
-                  className="btn btn-primary w-full h-12 text-base font-semibold shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 mb-3"
+                  className="btn btn-primary w-full mb-3"
                   onClick={handleCheckout}
                 >
                   ดำเนินการชำระเงิน

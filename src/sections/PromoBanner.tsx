@@ -170,7 +170,7 @@ export default function PromoBanner() {
             {/* CTA Button */}
             <button
               onClick={() => navigate('/products')}
-              className={`btn btn-lg bg-white text-gray-900 hover:bg-orange-50 px-8 py-6 text-lg font-bold rounded-xl hover:scale-105 group ${
+              className={`btn btn-lg bg-white text-gray-900 hover:bg-orange-50 rounded-xl hover:scale-105 group ${
                 isUrgent ? 'animate-pulse' : ''
               }`}
             >

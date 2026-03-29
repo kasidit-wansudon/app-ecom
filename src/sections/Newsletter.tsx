@@ -170,7 +170,7 @@ export default function Newsletter() {
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className="btn btn-primary px-8 py-4 text-lg font-semibold rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 hover:scale-105 disabled:opacity-70"
+                      className="btn btn-primary px-6 rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 hover:scale-105 disabled:opacity-70"
                     >
                       {isLoading ? (
                         <span className="flex items-center gap-2">

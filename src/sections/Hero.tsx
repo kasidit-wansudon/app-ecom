@@ -172,7 +172,7 @@ export default function Hero() {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-10">
               <button
-                className="hero-cta btn btn-primary btn-lg px-8 py-6 text-lg font-semibold rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 hover:scale-105 group"
+                className="hero-cta btn btn-primary btn-lg rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 hover:scale-105 group"
                 onClick={() => {
                   addToCart(mockProducts[0]);
                   navigate('/cart');
@@ -182,7 +182,7 @@ export default function Hero() {
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
               </button>
               <button
-                className="hero-cta btn btn-outline btn-lg border-2 border-gray-900 text-gray-900 hover:border-orange-500 hover:text-orange-500 hover:bg-orange-50 px-8 py-6 text-lg font-semibold rounded-xl group"
+                className="hero-cta btn btn-outline btn-lg border-gray-900 text-gray-900 hover:border-orange-500 hover:text-orange-500 hover:bg-orange-50 rounded-xl group"
                 onClick={() => navigate('/products')}
               >
                 ดูสินค้าทั้งหมด

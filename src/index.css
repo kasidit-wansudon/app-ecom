@@ -171,7 +171,7 @@
 
   /* Button Variants */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-300 cursor-pointer;
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm rounded-lg font-medium transition-all duration-300 cursor-pointer;
   }
 
   .btn-primary {
@@ -183,7 +183,7 @@
   }
 
   .btn-outline {
-    @apply btn border-2 border-gray-300 text-gray-900 hover:bg-gray-50 active:scale-95;
+    @apply btn border border-gray-300 text-gray-900 hover:bg-gray-50 active:scale-95;
   }
 
   .btn-ghost {
@@ -195,11 +195,11 @@
   }
 
   .btn-lg {
-    @apply btn px-8 py-6 text-lg font-semibold;
+    @apply btn px-6 py-3 text-base font-semibold;
   }
 
   .btn-sm {
-    @apply btn px-3 py-1 text-sm;
+    @apply btn px-3 py-1.5 text-xs;
   }
 
   /* Card */

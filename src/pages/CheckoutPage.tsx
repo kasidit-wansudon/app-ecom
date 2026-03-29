@@ -413,7 +413,7 @@ export default function CheckoutPage() {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="btn btn-primary w-full h-12 text-base"
+                className="btn btn-primary w-full"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? 'กำลังดำเนินการ...' : 'ยืนยันการสั่งซื้อ'}
